@@ -1,0 +1,20 @@
+{
+    "name": "videni/json-api-bundle",
+    "type": "symfony-bundle",
+    "description": "Integrate neomerx/json-api into Symfony",
+    "keywords": ["User"],
+    "license": "MIT",
+    "require": {
+        "php": "^7.1",
+        "symfony/framework-bundle": "^4.0",
+        "neomerx/json-api": "^3.0"
+    },
+    "autoload": {
+        "psr-4": { "Videni\\Bundle\\JsonApiBundle\\": "" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
