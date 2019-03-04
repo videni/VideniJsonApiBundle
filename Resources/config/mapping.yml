@@ -1,0 +1,44 @@
+services:
+    videni_json_api.metadata.file_locator:
+        class: Metadata\Driver\FileLocator
+        arguments:
+            - []
+
+    videni_json_api.metadata.cache.file_cache:
+        class: Metadata\Cache\FileCache
+
+    videni_json_api.metadata.cache:
+        alias:  videni_json_api.metadata.cache.file_cache
+
+    videni_json_api.metadata_factory:
+        class:  Metadata\MetadataFactory
+        arguments:
+            - '@videni_json_api.metadata_driver'
+            - 'Metadata\ClassHierarchyMetadata'
+        calls:
+            - [ setCache, [ '@?videni_json_api.metadata.cache' ] ]
+
+    Videni\Bundle\JsonApiBundle\Metadata\MetadataReader:
+        arguments:
+            - '@videni_json_api.metadata_factory'
+
+    videni_json_api.metadata_driver.chain:
+        class: Metadata\Driver\DriverChain
+        arguments:
+            - ['@Videni\Bundle\JsonApiBundle\Metadata\Driver\AnnotationDriver']
+
+    videni_json_api.metadata_driver:
+        alias: videni_json_api.metadata_driver.chain
+
+# Drivers
+    Videni\Bundle\JsonApiBundle\Metadata\Driver\AnnotationDriver:
+        arguments:
+            - '@annotation_reader'
+
+    Videni\Bundle\JsonApiBundle\Metadata\Driver\YamlDriver:
+        arguments:
+            - '@videni_json_api.metadata.file_locator'
+
+    Videni\Bundle\JsonApiBundle\Metadata\Driver\XmlDriver:
+        arguments:
+            - '@videni_json_api.metadata.file_locator'
